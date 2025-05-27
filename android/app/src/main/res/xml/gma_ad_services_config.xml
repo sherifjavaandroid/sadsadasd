@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ad-services-config>
+    <!-- Attribution API: اسمح لكل المعلنين بالوصول -->
+    <attribution allowAllToAccess="true" />
+
+    <!-- Topics API: اسمح لكل المعلنين بالوصول -->
+    <topics allowAllToAccess="true" />
+
+    <!-- Protected Audience API: اسمح لكل المعلنين بالوصول -->
+    <custom-audiences allowAllToAccess="true" />
+</ad-services-config>
