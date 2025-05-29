@@ -34,7 +34,8 @@ Future<void> main() async {
   await FlutterBranchSdk.init(
     enableLogging: true,
   );
-  selectedLanguage = sessionManager.giveString(KeyRes.languageCode) ?? byDefaultLanguage;
+  selectedLanguage =
+      sessionManager.giveString(KeyRes.languageCode) ?? byDefaultLanguage;
   runApp(MyApp());
 }
 

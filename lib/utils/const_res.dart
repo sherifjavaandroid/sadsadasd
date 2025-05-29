@@ -38,7 +38,7 @@ class ConstRes {
 const String appName = 'Suplleex';
 const companyName = 'All Safe';
 const defaultPlaceHolderText = 'S';
-const byDefaultLanguage = 'en';
+const byDefaultLanguage = 'ar';
 
 const int paginationLimit = 10;
 
