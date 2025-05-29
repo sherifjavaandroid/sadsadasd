@@ -1,4 +1,4 @@
-package com.sherifahmed.allsafe_camera
+package com.retrytech.bubbly_camera
 
 import android.app.Application
 import android.util.Log

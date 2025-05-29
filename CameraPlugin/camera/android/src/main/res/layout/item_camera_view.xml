@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.sherifahmed.allsafe_camera.AutoFitTextureView
+        <com.retrytech.bubbly_camera.AutoFitTextureView
             android:id="@+id/viewFinder"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
