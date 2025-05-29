@@ -21,7 +21,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
-	<string>com.retrytech.bubbly</string>
+	<string>com.sherifahmed.allsafe</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

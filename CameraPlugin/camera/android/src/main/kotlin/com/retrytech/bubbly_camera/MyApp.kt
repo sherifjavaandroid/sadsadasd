@@ -1,4 +1,4 @@
-package com.retrytech.bubbly_camera
+package com.sherifahmed.allsafe_camera
 
 import android.annotation.SuppressLint
 import android.app.Application

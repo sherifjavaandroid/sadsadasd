@@ -1,4 +1,4 @@
-package com.retrytech.bubbly
+package com.sherifahmed.allsafe
 
 import android.content.Intent
 import androidx.annotation.NonNull

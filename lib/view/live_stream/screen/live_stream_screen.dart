@@ -103,6 +103,7 @@ class LiveStreamScreen extends StatelessWidget {
                                             0))),
                               );
                             }
+                            //  model.goLiveTap(context);
                           },
                           child: Container(
                             padding: EdgeInsets.all(10),

@@ -91,22 +91,72 @@ class ItemSendBubble extends StatelessWidget {
     final user = myLoading.getUser;
     initPref();
     return GestureDetector(
-      onTap: () {
-        if ((user?.data?.myWallet ?? 0) > bubblesCount) {
+      onTap: () async {
+        // Debug wallet balance
+        final walletAmount = user?.data?.myWallet ?? 0;
+        print('=== WALLET CHECK ===');
+        print('User wallet amount: $walletAmount');
+        print('Bubbles to send: $bubblesCount');
+        print('User ID: ${user?.data?.userId}');
+        print('Video creator ID: ${videoData?.userId}');
+        print('Session User ID: ${SessionManager.userId}');
+        print('Access Token exists: ${SessionManager.accessToken.isNotEmpty}');
+
+        if (walletAmount > bubblesCount) {
           CommonUI.showLoader(context);
-          ApiService()
-              .sendCoin(bubblesCount.toString(), videoData!.userId.toString())
-              .then(
-            (value) {
-              Navigator.pop(context);
-              Navigator.pop(context);
-              myLoading.setUser(sessionManager.getUser());
-              showDialog(
-                  context: context,
-                  builder: (context) => SendCoinsResult(value.status == 200));
-            },
-          );
+
+          try {
+            print('=== STARTING SEND COIN PROCESS ===');
+
+            final value = await ApiService().sendCoin(
+                bubblesCount.toString(), videoData!.userId.toString());
+
+            print('=== SEND COIN SUCCESS ===');
+            print('Response status: ${value.status}');
+            print('Response message: ${value.message}');
+
+            Navigator.pop(context); // Close loader
+            Navigator.pop(context); // Close dialog
+
+            // Refresh user data
+            myLoading.setUser(sessionManager.getUser());
+
+            showDialog(
+                context: context,
+                builder: (context) => SendCoinsResult(value.status == 200));
+          } catch (e) {
+            Navigator.pop(context); // Close loader
+            print('=== SEND COIN ERROR ===');
+            print('Error details: $e');
+
+            String errorMessage = 'Unknown error occurred';
+
+            if (e.toString().contains('FormatException')) {
+              errorMessage =
+                  'Server returned invalid response. Please try again.';
+            } else if (e.toString().contains('SocketException')) {
+              errorMessage = 'Network connection error. Check your internet.';
+            } else if (e.toString().contains('TimeoutException')) {
+              errorMessage = 'Request timeout. Please try again.';
+            } else if (e.toString().contains('HTTP Error: 401')) {
+              errorMessage = 'Authentication failed. Please login again.';
+            } else if (e.toString().contains('HTTP Error: 403')) {
+              errorMessage = 'Access denied. Check your permissions.';
+            } else if (e.toString().contains('HTTP Error: 404')) {
+              errorMessage = 'API endpoint not found. Contact support.';
+            } else if (e.toString().contains('HTTP Error: 500')) {
+              errorMessage = 'Server error. Please try again later.';
+            } else if (e.toString().contains('HTML instead of JSON')) {
+              errorMessage = 'Server configuration error. Contact support.';
+            } else {
+              errorMessage = 'Error: ${e.toString().split(":").last.trim()}';
+            }
+
+            CommonUI.showToast(msg: errorMessage);
+          }
         } else {
+          print('=== INSUFFICIENT BALANCE ===');
+          print('Required: $bubblesCount, Available: $walletAmount');
           CommonUI.showToast(msg: LKey.insufficientBalance.tr);
         }
       },

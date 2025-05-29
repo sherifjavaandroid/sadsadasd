@@ -27,7 +27,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.retrytech.bubbly_camera
+        package: com.sherifahmed.allsafe_camera
         pluginClass: BubblyCameraPlugin
       ios:
         pluginClass: FlutterDailogPlugin

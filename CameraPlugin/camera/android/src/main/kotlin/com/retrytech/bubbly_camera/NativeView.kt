@@ -1,4 +1,4 @@
-package com.retrytech.bubbly_camera
+package com.sherifahmed.allsafe_camera
 
 import android.Manifest
 import android.content.Context

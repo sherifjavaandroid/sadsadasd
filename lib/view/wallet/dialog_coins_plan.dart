@@ -216,21 +216,26 @@ class _DialogCoinsPlanState extends State<DialogCoinsPlan> {
     isLoading = true;
     ApiService().getCoinPlanList().then((value) async {
       plans = value.data ?? [];
+      print("Plans received: ${plans.length}");
+
       for (var element in plans) {
+        print("Plan: ${element.toJson()}"); // Debug each plan
         if (Platform.isAndroid) {
           _productId.add(element.playstoreProductId ?? '');
         } else {
           _productId.add(element.appstoreProductId ?? '');
         }
       }
-      print(_productId);
+      print("Product IDs: $_productId");
 
       // Fetch Product
       final ProductDetailsResponse response =
           await InAppPurchase.instance.queryProductDetails(_productId);
 
-      products = response.productDetails;
+      print("Products found: ${response.productDetails.length}");
+      print("Not found IDs: ${response.notFoundIDs}");
 
+      products = response.productDetails;
       isLoading = false;
       setState(() {});
     });

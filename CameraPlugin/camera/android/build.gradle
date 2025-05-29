@@ -1,4 +1,4 @@
-group 'com.retrytech.bubbly_camera'
+group 'com.sherifahmed.allsafe_camera'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 35
-    namespace "com.retrytech.bubbly_camera"
+    namespace "com.sherifahmed.allsafe_camera"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin/com/retrytech/bubbly_camera'

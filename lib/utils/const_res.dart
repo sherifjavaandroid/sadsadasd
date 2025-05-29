@@ -1,13 +1,14 @@
 class ConstRes {
-  static final String base = 'https://shortzz.retrytech.site/';
-  static const String apiKey = '6vXvtsuHAGAftpcA3pTJqUJEEghQatJA';
+  static final String base = 'https://suplex-v2.allsafeeg-project.com/';
+  static const String apiKey = 'dev123';
   static final String baseUrl = '${base}api/';
 
-  static final String itemBaseUrl = 'ITEM BASE URL';
+  static final String itemBaseUrl =
+      'https://suplleexx.s3.eu-north-1.amazonaws.com/bubbly/';
 
   // Agora Credential
-  static final String customerId = '2fa80f7f38ec48c7b3df029de7599738';
-  static final String customerSecret = 'ce11056b3fd44851919670703656b9e9';
+  static final String customerId = '42d7cb3000574fcea0a9cb993e19c946';
+  static final String customerSecret = '753ab2f5fbce4b82b56c7943fd052dd4';
 
   // Starting screen open end_user_license_agreement sheet link
   static final String agreementUrl =
@@ -15,10 +16,27 @@ class ConstRes {
 
   static final String bubblyCamera = 'bubbly_camera';
   static final bool isDialog = false;
+
+  static void validateCredentials() {
+    print('Customer ID: $customerId');
+    print('Customer Secret: ${customerSecret.isNotEmpty ? '***' : 'EMPTY'}');
+
+    if (customerId.isEmpty || customerSecret.isEmpty) {
+      throw Exception('Agora credentials are missing!');
+    }
+
+    if (customerId.length != 32) {
+      throw Exception('Invalid Agora App ID format');
+    }
+
+    if (customerSecret.length != 32) {
+      throw Exception('Invalid Agora App Certificate format');
+    }
+  }
 }
 
-const String appName = 'Shortzz';
-const companyName = 'FM_Tech';
+const String appName = 'Suplleex';
+const companyName = 'All Safe';
 const defaultPlaceHolderText = 'S';
 const byDefaultLanguage = 'en';
 
