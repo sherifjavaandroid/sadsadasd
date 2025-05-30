@@ -42,7 +42,11 @@ class _ChatScreenState extends State<ChatScreen> {
   var db = FirebaseFirestore.instance;
   late DocumentReference drReceiver;
   late DocumentReference drSender;
-  late CollectionReference drChatMessage;
+
+  // Change from late to nullable and add initialization check
+  CollectionReference? drChatMessage;
+  bool _isFirestoreInitialized = false;
+
   List<String> notDeletedIdentity = [];
   Map<String, List<ChatMessage>>? grouped;
   ChatUser? receiverUser;
@@ -115,6 +119,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onCameraTap(BuildContext context) async {
+    // Check if Firestore is initialized before proceeding
+    if (!_isFirestoreInitialized) {
+      CommonUI.showToast(msg: "Please wait, chat is loading...");
+      return;
+    }
+
     File? images;
     final ImagePicker _picker = ImagePicker();
     // Pick an image
@@ -152,6 +162,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onShareBtnTap() {
+    // Check if Firestore is initialized before sending message
+    if (!_isFirestoreInitialized) {
+      CommonUI.showToast(msg: "Please wait, chat is loading...");
+      return;
+    }
+
     if (textMsgController.text.trim() != '') {
       firebaseMsgUpdate(
               msgType: FirebaseRes.msg,
@@ -179,7 +195,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void getProfile() {
     ApiService().getProfile('${conversation?.user?.userid}').then((value) {
       conversationUserData = value;
-      // print(value.data?.toJson());
       setState(() {});
     });
     ApiService().getProfile(SessionManager.userId.toString()).then((value) {
@@ -215,13 +230,22 @@ class _ChatScreenState extends State<ChatScreen> {
         if (value.data() != null && value.data()?.conversationId != null) {
           conversation?.setConversationId(value.data()?.conversationId);
         }
+
+        // Initialize drChatMessage and set flag
         drChatMessage = db
             .collection(FirebaseRes.chat)
             .doc(conversation?.conversationId)
             .collection(FirebaseRes.chat);
+
+        _isFirestoreInitialized = true;
+        setState(() {}); // Update UI to reflect that chat is ready
+
         getChat();
       },
-    );
+    ).catchError((error) {
+      print("Error initializing Firestore: $error");
+      CommonUI.showToast(msg: "Failed to initialize chat. Please try again.");
+    });
   }
 
   void getChat() async {
@@ -254,7 +278,10 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() {});
     });
 
-    chatStream = drChatMessage
+    // Add null check for drChatMessage
+    if (drChatMessage == null) return;
+
+    chatStream = drChatMessage!
         .where(FirebaseRes.noDeletedId, arrayContains: user?.data?.identity)
         .where(FirebaseRes.time,
             isGreaterThan: deletedId.isEmpty ? 0.0 : double.parse(deletedId))
@@ -301,12 +328,18 @@ class _ChatScreenState extends State<ChatScreen> {
       String? textMessage,
       String? image,
       String? video}) async {
+    // Add safety check for drChatMessage
+    if (drChatMessage == null) {
+      CommonUI.showToast(msg: "Chat not ready. Please wait...");
+      return;
+    }
+
     var time = DateTime.now().millisecondsSinceEpoch;
     notDeletedIdentity = [];
     notDeletedIdentity.addAll(
         ['${user?.data?.identity}', '${conversation?.user?.userIdentity}']);
 
-    drChatMessage.doc(time.toString()).set(
+    drChatMessage!.doc(time.toString()).set(
           ChatMessage(
             notDeletedIdentities: notDeletedIdentity,
             senderUser: ChatUser(
@@ -386,6 +419,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onAddBtnTap() {
+    // Check if Firestore is initialized
+    if (!_isFirestoreInitialized) {
+      CommonUI.showToast(msg: "Please wait, chat is loading...");
+      return;
+    }
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -426,8 +465,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onDeleteYesBtnClick() {
+    // Add safety check
+    if (drChatMessage == null) return;
+
     for (int i = 0; i < timeStamp.length; i++) {
-      drChatMessage.doc(timeStamp[i]).update(
+      drChatMessage!.doc(timeStamp[i]).update(
         {
           FirebaseRes.noDeletedId:
               FieldValue.arrayRemove(['${user?.data?.identity}'])

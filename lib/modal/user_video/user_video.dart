@@ -125,6 +125,11 @@ class Data {
     }
   }
 
+  // Add this method to update follow status
+  void setFollowStatus(int value) {
+    _followOrNot = value;
+  }
+
   String? get sound => _sound;
 
   int? get postLikesCount => _postLikesCount;

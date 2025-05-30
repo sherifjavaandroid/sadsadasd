@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "156483813922-d4p99tuih2l3av68lphuc4s4lpjsjo99.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sherifahmed.allsafe",
+            "certificate_hash": "f7c95039e99bb8536e0b886f292049d18be6f496"
+          }
+        },
+        {
           "client_id": "156483813922-g40cpba78jb4l2potk9k5cclfkgfpv43.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "156483813922-8o8akqevd9t5voucebuqg5d49mf01tr9.apps.googleusercontent.com",
+              "client_id": "156483813922-82k9av8fiiu23h611ctbusjebp0cnn8q.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.retrytech.bubbly"
+                "bundle_id": "com.sherifahmed.allsafe"
               }
             }
           ]
